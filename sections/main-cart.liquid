@@ -1,0 +1,54 @@
+<div class="cart-section">
+  <div class="cart-header">
+    <h1>Shopping Cart</h1>
+    <p>{{ cart.item_count }} item{% if cart.item_count != 1 %}s{% endif %} in your cart</p>
+  </div>
+
+  {%- if cart.item_count == 0 -%}
+    <p style="text-align:center;padding:60px 0;">Your cart is empty. <a href="{{ routes.all_products_collection_url }}">Continue shopping &rarr;</a></p>
+  {%- else -%}
+  <form action="{{ routes.cart_url }}" method="post" id="cartForm">
+    <div class="cart-layout">
+      <div class="cart-items">
+        {%- for item in cart.items -%}
+        <div class="cart-row">
+          <div class="cart-img"><img src="{{ item.image | image_url: width: 300 }}" alt="{{ item.title | escape }}"></div>
+          <div class="cart-details">
+            <div class="cart-prod-name">{{ item.product.title }}</div>
+            <div class="cart-prod-meta">{{ item.variant.title }}</div>
+            <div class="cart-prod-price">({{ item.final_price | money }})</div>
+            <div class="cart-qty">
+              <button type="button" class="cart-qty-btn" onclick="cartUpdateQty({{ item.key | json }}, {{ item.quantity | minus: 1 }})">&minus;</button>
+              <div class="cart-qty-val">{{ item.quantity }}</div>
+              <button type="button" class="cart-qty-btn" onclick="cartUpdateQty({{ item.key | json }}, {{ item.quantity | plus: 1 }})">+</button>
+            </div>
+            <span class="cart-del" onclick="cartUpdateQty({{ item.key | json }}, 0)">Remove</span>
+          </div>
+        </div>
+        {%- endfor -%}
+      </div>
+      <div class="cart-summary">
+        <h3>Order Summary</h3>
+        <div class="cart-line"><span>Subtotal</span><span>({{ cart.total_price | money }})</span></div>
+        <div class="cart-line"><span>Shipping</span><span style="color:var(--red);">Calculated at checkout</span></div>
+        <div class="cart-total"><span>Total</span><span>({{ cart.total_price | money }})</span></div>
+        <button type="submit" name="checkout" class="btn-checkout">Proceed to Checkout &rarr;</button>
+        <div class="cart-promo">
+          <input type="text" name="discount" placeholder="Discount code" value="{{ cart.discount_codes | map: 'code' | join: ', ' }}">
+          <button type="submit">Apply</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  {%- endif -%}
+</div>
+
+<script>
+  function cartUpdateQty(key, qty) {
+    fetch('{{ routes.cart_change_url }}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: key, quantity: qty })
+    }).then(function() { window.location.reload(); });
+  }
+</script>

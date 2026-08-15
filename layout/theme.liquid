@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ page_title }}{% unless page_title contains shop.name %} | {{ shop.name }}{% endunless %}</title>
+  {% if page_description %}<meta name="description" content="{{ page_description }}">{% endif %}
+  <link rel="canonical" href="{{ canonical_url }}">
+  {{ content_for_header }}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+  <link rel="icon" href="{{ 'indimode-logo.png' | asset_url }}" type="image/png">
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- PAGE LOADER -->
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-icon">
+      <img src="{{ 'loader-icons.png' | asset_url }}" alt="{{ shop.name }}">
+    </div>
+    <div class="loader-dots"><span></span><span></span><span></span></div>
+  </div>
+
+  <!-- WELCOME POPUP -->
+  <div class="welcome-overlay" id="welcomePopup">
+    <div class="welcome-popup">
+      <div class="wp-bg"><img src="{{ 'wp-duet.jpg' | asset_url }}" alt="Models in ethnic Indian wear" loading="eager"></div>
+      <button class="wp-close" onclick="closeWelcome()">✕</button>
+      <div class="wp-body">
+        <div class="wp-motif">❦</div>
+        <div class="wp-brand-svg">
+          <img src="{{ 'indimode-logo.png' | asset_url }}" alt="{{ shop.name }}">
+        </div>
+        <div class="wp-tagline">For every you, in every mode.</div>
+        <div class="wp-bottom">
+          <div class="wp-subtitle">Because every moment calls for a different version of you.</div>
+          <button class="wp-cta" onclick="closeWelcome()">See What's New</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICKVIEW DRAWER -->
+  <div class="qv-overlay" id="qvOverlay" onclick="closeQuickView()"></div>
+  <div class="qv-drawer" id="qvDrawer">
+    <button class="qv-close" onclick="closeQuickView()">✕</button>
+    <div class="qv-img-wrap" style="cursor:pointer;">
+      <img id="qvImg" src="" alt="Product">
+    </div>
+    <div class="qv-body">
+      <div class="qv-name" id="qvName"></div>
+      <div class="qv-price" id="qvPrice"></div>
+      <div class="qv-label">Size</div>
+      <div class="qv-sizes">
+        <button class="qv-size" onclick="pickSize(this)">XS</button>
+        <button class="qv-size active" onclick="pickSize(this)">S</button>
+        <button class="qv-size" onclick="pickSize(this)">M</button>
+        <button class="qv-size" onclick="pickSize(this)">L</button>
+        <button class="qv-size" onclick="pickSize(this)">XL</button>
+        <button class="qv-size" onclick="pickSize(this)">XXL</button>
+      </div>
+      <div class="qv-label">Quantity</div>
+      <div class="qv-qty">
+        <button onclick="qvQty(-1)">−</button>
+        <input class="qv-qty-val" id="qvQtyVal" type="text" value="1" readonly>
+        <button onclick="qvQty(1)">+</button>
+      </div>
+      <button class="qv-add" onclick="addToCartFromQuickView()">Add to Cart</button>
+      <button class="qv-view" onclick="closeQuickView()">View Full Details</button>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM PILL NAV -->
+  <div class="mob-pill-nav" id="mobPillNav">
+    <a class="mob-pill-btn active" href="{{ routes.root_url }}" aria-label="Home">
+      <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg>
+    </a>
+    <a class="mob-pill-btn" href="{{ routes.account_url }}" aria-label="Account">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </a>
+    <button class="mob-pill-btn" onclick="openSearch()" aria-label="Search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </button>
+    <a class="mob-pill-btn" href="/pages/wishlist" aria-label="Wishlist">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </a>
+  </div>
+
+  <!-- SEARCH OVERLAY -->
+  <div class="search-overlay" id="searchOverlay" onclick="closeSearch()"></div>
+  <div class="search-modal" id="searchModal">
+    <div class="sm-bar">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchField" placeholder="Search for..." oninput="handleSearch(this.value)">
+      <button class="sm-close" onclick="closeSearch()">✕</button>
+    </div>
+    <div id="searchResults">
+      <div class="sm-popular">
+        <div class="sm-group-label">Popular Searches</div>
+        <div class="sm-popular-tags">
+          <span class="sm-popular-tag" onclick="fillSearch('Beaded Kurti')">Beaded Kurti</span>
+          <span class="sm-popular-tag" onclick="fillSearch('Block Print Kurta')">Block Print Kurta</span>
+          <span class="sm-popular-tag" onclick="fillSearch('Co-ord Set')">Co-ord Set</span>
+          <span class="sm-popular-tag" onclick="fillSearch('Palazzo')">Palazzo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOP THE LOOK DRAWER -->
+  <div class="stl-drawer-overlay" id="stlOverlay" onclick="closeSTLDrawer()"></div>
+  <div class="stl-drawer" id="stlDrawer">
+    <div class="stl-drawer-handle"></div>
+    <div class="stl-drawer-header">
+      <div class="stl-drawer-img" style="cursor:pointer;"><img id="stlDrawerImg" src="" alt="Product"></div>
+      <div class="stl-drawer-info">
+        <div class="stl-drawer-name" id="stlName"></div>
+        <div class="stl-drawer-price-row">
+          <span class="stl-drawer-price" id="stlPrice"></span>
+          <span class="stl-drawer-view">View details</span>
+        </div>
+        <div class="stl-drawer-tax">Inclusive of All Taxes.</div>
+      </div>
+      <button class="stl-drawer-close" onclick="closeSTLDrawer()">✕</button>
+    </div>
+    <div class="stl-drawer-body">
+      <div class="stl-size-header"><span>Size: <strong>S</strong></span><span class="stl-size-chart">Size chart</span></div>
+      <div class="stl-size-row">
+        <button class="stl-size-btn" onclick="selectSTLSize(this)">XS</button>
+        <button class="stl-size-btn active" onclick="selectSTLSize(this)">S</button>
+        <button class="stl-size-btn" onclick="selectSTLSize(this)">M</button>
+        <button class="stl-size-btn" onclick="selectSTLSize(this)">L</button>
+        <button class="stl-size-btn" onclick="selectSTLSize(this)">XL</button>
+        <button class="stl-size-btn" onclick="selectSTLSize(this)">XXL</button>
+      </div>
+      <div class="stl-actions">
+        <button class="stl-btn-atc">Add to Cart</button>
+        <button class="stl-btn-buy">Buy It Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHATSAPP BAR -->
+  <div class="wa-bar" id="waBar">
+    <button class="wa-bar-close" onclick="document.getElementById('waBar').classList.add('collapsed')">×</button>
+    <div class="wa-bar-text"><strong>Need help?</strong><br>Chat with us on WhatsApp</div>
+    <a href="https://wa.me/919999999999" target="_blank" rel="noopener" class="wa-bar-btn" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header">
+      <div class="cart-drawer-title">Your Bag <span class="cart-drawer-count" id="cartDrawerCount"></span></div>
+      <button class="cart-drawer-close" onclick="closeCartDrawer()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-drawer-footer">
+      <div class="cart-shipping-bar">
+        <div class="cart-shipping-text" id="cartShippingText">Add ₹<span id="cartShippingAmt">999</span> more for free shipping</div>
+        <div class="cart-shipping-progress"><div class="cart-shipping-fill" id="cartShippingFill" style="width:0%"></div></div>
+      </div>
+      <div class="cart-subtotal"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
+      <a href="{{ routes.cart_url }}" class="btn-dark" style="display:block;text-align:center;margin-bottom:12px;">View Cart</a>
+      <a href="/checkout" class="btn-red" style="display:block;text-align:center;">Checkout →</a>
+    </div>
+  </div>
+
+  {% render 'header' %}
+
+  <main id="MainContent" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {% render 'footer' %}
+
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+</body>
+</html>

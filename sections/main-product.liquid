@@ -1,0 +1,206 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="pdp2-layout">
+  <div class="pdp2-meta-col">
+    <div class="pdp2-tags">
+      {%- for tag in product.tags limit: 3 -%}
+        <span class="pdp2-tag">{{ tag }}</span>
+      {%- endfor -%}
+    </div>
+    <div class="pdp2-title-row">
+      <h1 class="pdp2-title">{{ product.title }}</h1>
+      <button class="pdp2-bookmark" aria-label="Save" onclick="indimodeWishlistToggle('{{ product.handle }}', this); this.classList.toggle('active');"><svg viewBox="0 0 24 24"><path d="M19 21 12 16l-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+    </div>
+    {%- if product.type != blank -%}<div class="pdp2-meta-row"><span>Style</span><span>{{ product.type }}</span></div>{%- endif -%}
+    {%- assign color_option = product.options_with_values | where: "name", "Color" | first -%}
+    {%- if color_option -%}
+      {%- assign color_index = color_option.position | minus: 1 -%}
+      <div class="pdp2-meta-row"><span>Color</span><span>{{ current_variant.options[color_index] }}</span></div>
+    {%- endif -%}
+    {%- if product.metafields.custom.model_fit != blank -%}
+    <div class="pdp2-meta-row"><span>Model Fit Check</span><span>{{ product.metafields.custom.model_fit }}</span></div>
+    {%- endif -%}
+    <div class="pdp2-side-thumb">
+      <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title | escape }}">
+    </div>
+  </div>
+
+  <div class="pdp2-main-col">
+    <img id="pdp2MainImgBig" src="{{ current_variant.featured_image.src | default: product.featured_image | image_url: width: 1200 }}" alt="{{ product.title | escape }}">
+  </div>
+
+  <div class="pdp2-buy-col">
+    {%- form 'product', product -%}
+      <input type="hidden" name="id" value="{{ current_variant.id }}" id="pdp2VariantId">
+
+      {%- assign size_option = product.options_with_values | where: "name", "Size" | first -%}
+      {%- if size_option -%}
+        {%- assign size_index = size_option.position | minus: 1 -%}
+        {%- assign current_size_value = current_variant.options[size_index] -%}
+        <div class="pdp2-size-toggle">
+          <span class="pdp2-size-help" onclick="togglePDPSizeGuide()" style="cursor:pointer;">Size &amp; Fit Guide</span>
+        </div>
+        <div class="pdp2-measure-box" id="pdpMeasureBox">
+          <div class="pdp2-measure-row"><span>Chest</span><span>34–36<sup>inch</sup></span></div>
+          <div class="pdp2-measure-row"><span>High Waist</span><span>28–30<sup>inch</sup></span></div>
+          <div class="pdp2-measure-row"><span>Hip</span><span>36–38<sup>inch</sup></span></div>
+          <div class="pdp2-measure-row"><span>Top Length</span><span>26<sup>inch</sup></span></div>
+          <div class="pdp2-measure-row"><span>Pant Waist</span><span>32<sup>inch</sup></span></div>
+          <div class="pdp2-measure-row"><span>Pant Length</span><span>40<sup>inch</sup></span></div>
+        </div>
+        <div class="pdp2-size-grid">
+          {%- for value in size_option.values -%}
+            {%- assign is_selected = false -%}
+            {%- if current_size_value == value -%}{%- assign is_selected = true -%}{%- endif -%}
+            <button type="button" class="pdp2-size-btn{% if is_selected %} active{% endif %}" data-size-value="{{ value | escape }}" onclick="pdp2SelectSize(this, {{ size_option.position }})">{{ value }}</button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <div class="pdp2-price" id="pdpPrice">
+        ({{ current_variant.price | money }}
+        {%- if current_variant.compare_at_price > current_variant.price %} <s>{{ current_variant.compare_at_price | money }}</s>{%- endif -%})
+      </div>
+
+      {%- if product.images.size > 1 -%}
+      <div class="pdp2-more-colors">
+        <h4>More Photos</h4>
+        <div class="pdp2-color-thumbs">
+          {%- for image in product.images limit: 4 -%}
+          <div class="pdp2-color-thumb{% if forloop.first %} active{% endif %}" onclick="document.getElementById('pdp2MainImgBig').src='{{ image | image_url: width: 1200 }}'">
+            <img src="{{ image | image_url: width: 150 }}" alt="{{ product.title | escape }}">
+          </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- endif -%}
+
+      <button type="submit" class="pdp2-add-btn" {% if current_variant.available == false %}disabled style="background:#888;opacity:0.6;cursor:not-allowed;"{% endif %}>
+        {%- if current_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
+      </button>
+      <button type="button" class="pdp2-add-btn" id="pdp2BtnBuy" style="background:#fadba3;color:#1a1a1a;margin-top:10px;font-weight:700;" {% if current_variant.available == false %}disabled style="background:#e0e0e0;color:#888;opacity:0.5;cursor:not-allowed;"{% endif %}>Buy Now</button>
+      <div class="pdp2-returns-line" id="pdp2ReturnsTicker">
+        <span class="pdp2-ticker-item active"><span>&#8617;</span> Easy 7 Days Returns and Exchange</span>
+        <span class="pdp2-ticker-item"><span>🚚</span> Free Shipping on Orders above 1999</span>
+      </div>
+    {%- endform -%}
+  </div>
+</div>
+
+{%- if product.metafields.custom.video != blank -%}
+<div class="pdp2-mobile-video">
+  <video autoplay muted loop playsinline preload="auto" src="{{ product.metafields.custom.video }}"></video>
+</div>
+{%- endif -%}
+
+<div class="pdp2-accordion">
+  <div class="accordion-item open"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">Details &amp; Description</div><div class="accordion-body"><p>{{ product.description }}</p></div></div>
+  <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">Shipping &amp; Delivery</div><div class="accordion-body"><p>Free shipping on all orders above Rs. 2,999. Delivered within 5-7 business days.</p></div></div>
+  <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">Return &amp; Exchange</div><div class="accordion-body"><p>Easy returns and exchange within 7 days of delivery. Item must be unused with tags intact.</p></div></div>
+  <div class="accordion-item"><div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">Full Disclosure</div><div class="accordion-body"><p>Colors may slightly vary due to photography and screen settings. Handloom pieces may carry minor natural variations — a mark of authenticity, not a defect.</p></div></div>
+</div>
+
+{%- assign related_collection = product.collections.first -%}
+{%- if related_collection -%}
+<section class="section" style="background:var(--gray-50);">
+  <div class="container">
+    <div class="sec-header"><h2 class="sec-title">You May Also Like</h2></div>
+    <div class="product-grid">
+      {%- for related in related_collection.products limit: 4 -%}
+        {%- if related.id != product.id -%}
+        <div class="product-card" onclick="window.location.href='{{ related.url }}'">
+          <div class="product-img">
+            <div class="ph"><img src="{{ related.featured_image | image_url: width: 500 }}" alt="{{ related.title | escape }}"></div>
+            {%- if related.images.size > 1 -%}<div class="ph-alt"><img src="{{ related.images[1] | image_url: width: 500 }}" alt="{{ related.title | escape }}"></div>{%- endif -%}
+            <span class="product-wishlist" data-product-handle="{{ related.handle }}">&#9825;</span>
+          </div>
+          <div class="product-info">
+            <div class="product-name">{{ related.title }}</div>
+            <div class="product-price">({{ related.price | money }})</div>
+          </div>
+        </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+<script>
+  function initPDPReturnsTicker() {
+    var ticker = document.getElementById('pdp2ReturnsTicker');
+    if (!ticker) return;
+    var items = ticker.querySelectorAll('.pdp2-ticker-item');
+    if (items.length < 2) return;
+    var curr = 0;
+    setInterval(function () {
+      items[curr].classList.remove('active');
+      curr = (curr + 1) % items.length;
+      items[curr].classList.add('active');
+    }, 3200);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPDPReturnsTicker);
+  } else {
+    initPDPReturnsTicker();
+  }
+  function togglePDPSizeGuide() {
+    var box = document.getElementById('pdpMeasureBox');
+    if (box) {
+      if (box.classList.contains('show') || box.style.display === 'block') {
+        box.classList.remove('show');
+        box.style.display = 'none';
+      } else {
+        box.classList.add('show');
+        box.style.display = 'block';
+      }
+    }
+  }
+
+  var pdpVariants = {{ product.variants | json }};
+  function pdp2SelectSize(btn, optionPosition) {
+    document.querySelectorAll('.pdp2-size-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    var selectedSize = btn.getAttribute('data-size-value');
+    var matchedVariant = pdpVariants.find(function(v) {
+      return v.options[optionPosition - 1] === selectedSize;
+    }) || pdpVariants[0];
+
+    var atcBtn = document.querySelector('.pdp2-add-btn[type="submit"]');
+    var buyBtn = document.getElementById('pdp2BtnBuy');
+    var variantIdInput = document.getElementById('pdp2VariantId');
+    if (variantIdInput && matchedVariant) variantIdInput.value = matchedVariant.id;
+
+    if (matchedVariant && !matchedVariant.available) {
+      if (atcBtn) {
+        atcBtn.textContent = 'Sold Out';
+        atcBtn.disabled = true;
+        atcBtn.style.background = '#888';
+        atcBtn.style.opacity = '0.6';
+        atcBtn.style.cursor = 'not-allowed';
+      }
+      if (buyBtn) {
+        buyBtn.disabled = true;
+        buyBtn.style.background = '#e0e0e0';
+        buyBtn.style.color = '#888';
+        buyBtn.style.opacity = '0.5';
+        buyBtn.style.cursor = 'not-allowed';
+      }
+    } else {
+      if (atcBtn) {
+        atcBtn.textContent = 'Add to Cart';
+        atcBtn.disabled = false;
+        atcBtn.style.background = '';
+        atcBtn.style.opacity = '1';
+        atcBtn.style.cursor = 'pointer';
+      }
+      if (buyBtn) {
+        buyBtn.disabled = false;
+        buyBtn.style.background = '#fadba3';
+        buyBtn.style.color = '#1a1a1a';
+        buyBtn.style.opacity = '1';
+        buyBtn.style.cursor = 'pointer';
+      }
+    }
+  }
+</script>

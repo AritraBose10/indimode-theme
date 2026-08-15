@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "hero-video": {
+      "type": "hero-video",
+      "settings": {}
+    },
+    "new-arrivals-collage": {
+      "type": "new-arrivals-collage",
+      "settings": {}
+    },
+    "fresh-picks": {
+      "type": "fresh-picks",
+      "settings": {}
+    },
+    "festive-collection": {
+      "type": "festive-collection",
+      "settings": {}
+    },
+    "full-banner": {
+      "type": "full-banner",
+      "settings": {}
+    },
+    "shop-the-looks": {
+      "type": "shop-the-looks",
+      "settings": {}
+    },
+    "beyond-the-atelier": {
+      "type": "beyond-the-atelier",
+      "settings": {}
+    },
+    "email-signup-banner": {
+      "type": "email-signup-banner",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero-video",
+    "new-arrivals-collage",
+    "fresh-picks",
+    "festive-collection",
+    "full-banner",
+    "shop-the-looks",
+    "beyond-the-atelier",
+    "email-signup-banner"
+  ]
+}

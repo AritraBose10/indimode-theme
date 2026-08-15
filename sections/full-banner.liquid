@@ -1,0 +1,20 @@
+<div class="full-banner">
+  <div class="full-banner-bg">
+    <img loading="lazy" class="full-banner-img-desktop" src="{{ 'festive-banner.jpg' | asset_url }}" alt="Festive Edit Collection">
+    <img loading="lazy" class="full-banner-img-mobile" src="{{ 'festive-banner-mobile.jpg' | asset_url }}" alt="Festive Edit Collection">
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="full-banner-content" style="position:relative;z-index:2;">
+    <a href="/collections/festive" class="btn-dark" style="background:var(--white);color:var(--dark);">Shop the Vibe →</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Full Width Banner",
+  "settings": [],
+  "presets": [
+    { "name": "Full Width Banner" }
+  ]
+}
+{% endschema %}

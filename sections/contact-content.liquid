@@ -1,0 +1,37 @@
+<div class="contact-hero"><h1>{{ section.settings.heading }}</h1><p>{{ section.settings.subheading }}</p></div>
+<div class="contact-layout">
+  {%- form 'contact' -%}
+    {%- if form.posted_successfully? -%}
+      <p style="color:var(--red);margin-bottom:16px;">Thanks — we'll be in touch shortly.</p>
+    {%- endif -%}
+    <div class="contact-form">
+      <label>Name</label><input type="text" name="contact[name]" placeholder="Your full name">
+      <label>Email</label><input type="email" name="contact[email]" placeholder="your@email.com" required>
+      <label>Subject</label><input type="text" name="contact[subject]" placeholder="How can we help?">
+      <label>Message</label><textarea name="contact[body]" placeholder="Tell us more..."></textarea>
+      <button type="submit">Send Message &rarr;</button>
+    </div>
+  {%- endform -%}
+  <div class="contact-info">
+    <h3>Contact Information</h3>
+    <div class="contact-info-item"><div class="ci-icon">&#128205;</div><div><h4>Visit Us</h4><p>{{ section.settings.address }}</p></div></div>
+    <div class="contact-info-item"><div class="ci-icon">&#128231;</div><div><h4>Email</h4><p>{{ section.settings.email }}</p></div></div>
+    <div class="contact-info-item"><div class="ci-icon">&#128222;</div><div><h4>Phone</h4><p>{{ section.settings.phone }}</p></div></div>
+    <div class="contact-info-item"><div class="ci-icon">&#128337;</div><div><h4>Hours</h4><p>{{ section.settings.hours }}</p></div></div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact content",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Get in Touch" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "We'd love to hear from you" },
+    { "type": "text", "id": "address", "label": "Address" },
+    { "type": "text", "id": "email", "label": "Email" },
+    { "type": "text", "id": "phone", "label": "Phone" },
+    { "type": "text", "id": "hours", "label": "Hours", "default": "Mon–Sat, 10AM – 7PM IST" }
+  ],
+  "presets": [{ "name": "Contact content" }]
+}
+{% endschema %}

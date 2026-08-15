@@ -1,0 +1,88 @@
+<section class="section-sm" style="background: var(--gray-50);">
+  <div class="container">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Just Dropped</div>
+      <h2 class="sec-title">Fresh Picks</h2>
+    </div>
+    <div class="fp-track-wrap">
+      <div class="fp-track" id="fpTrack">
+        <a class="fp-vcard" href="/products/the-naina-kurti">
+          <img loading="lazy" src="{{ 'naina-1.jpg' | asset_url }}" alt="The Naina Kurti">
+          <div class="festive-card-overlay"></div>
+          <div class="festive-card-info">
+            <div class="festive-card-name">The Naina Kurti</div>
+            <div class="festive-card-price">Rs. 1,499</div>
+            <div class="festive-card-cta">Shop Now →</div>
+          </div>
+        </a>
+        <a class="fp-vcard" href="/products/the-aditi-kurti">
+          <img loading="lazy" src="{{ 'aditi-1.jpg' | asset_url }}" alt="The Aditi Kurti">
+          <div class="festive-card-overlay"></div>
+          <div class="festive-card-info">
+            <div class="festive-card-name">The Aditi Kurti</div>
+            <div class="festive-card-price">Rs. 1,699</div>
+            <div class="festive-card-cta">Shop Now →</div>
+          </div>
+        </a>
+        <a class="fp-vcard" href="/products/the-anya-top">
+          <img loading="lazy" src="{{ 'anya-1.jpg' | asset_url }}" alt="The Anya Top">
+          <div class="festive-card-overlay"></div>
+          <div class="festive-card-info">
+            <div class="festive-card-name">The Anya Top</div>
+            <div class="festive-card-price">Rs. 1,499</div>
+            <div class="festive-card-cta">Shop Now →</div>
+          </div>
+        </a>
+        <a class="fp-vcard" href="/products/warli-off-duty-set">
+          <img loading="lazy" src="{{ 'warli-1.jpg' | asset_url }}" alt="The Warli Off Duty Set">
+          <div class="festive-card-overlay"></div>
+          <div class="festive-card-info">
+            <div class="festive-card-name">The Warli Off Duty Set</div>
+            <div class="festive-card-price">Rs. 2,499</div>
+            <div class="festive-card-cta">Shop Now →</div>
+          </div>
+        </a>
+        <a class="fp-vcard" href="/products/the-meher-kurti">
+          <img loading="lazy" src="{{ 'meher-1.jpg' | asset_url }}" alt="The Meher Kurti">
+          <div class="festive-card-overlay"></div>
+          <div class="festive-card-info">
+            <div class="festive-card-name">The Meher Kurti</div>
+            <div class="festive-card-price">Rs. 1,999</div>
+            <div class="festive-card-cta">Shop Now →</div>
+          </div>
+        </a>
+        <a class="fp-vcard" href="/products/berry-bloom-top">
+          <img loading="lazy" src="{{ 'berry-1.jpg' | asset_url }}" alt="Berry Bloom Top">
+          <div class="festive-card-overlay"></div>
+          <div class="festive-card-info">
+            <div class="festive-card-name">Berry Bloom Top</div>
+            <div class="festive-card-price">Rs. 1,499</div>
+            <div class="festive-card-cta">Shop Now →</div>
+          </div>
+        </a>
+        <a class="fp-vcard" href="/products/daisy-daze-beaded-kurti">
+          <img loading="lazy" src="{{ 'daisy-1.jpg' | asset_url }}" alt="Daisy Daze Beaded Kurti">
+          <div class="festive-card-overlay"></div>
+          <div class="festive-card-info">
+            <div class="festive-card-name">Daisy Daze Beaded Kurti</div>
+            <div class="festive-card-price">Rs. 1,699</div>
+            <div class="festive-card-cta">Shop Now →</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="sec-header" style="margin-top:32px;margin-bottom:0;">
+      <a href="{{ routes.all_products_collection_url }}" class="sec-link">View All Fresh Picks →</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Fresh Picks",
+  "settings": [],
+  "presets": [
+    { "name": "Fresh Picks" }
+  ]
+}
+{% endschema %}

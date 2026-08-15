@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "about-content",
+      "settings": {
+        "image": "shopify://shop_images/hero-bg.jpg"
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,52 @@
+<div class="coll-hero"><h1>{{ collection.title }}</h1><p>{{ collection.description | default: "Handcrafted pieces from India's finest weaving traditions" }}</p></div>
+<div class="coll-breadcrumb"><a href="{{ routes.root_url }}">Home</a> <span>/</span> {{ collection.title }}</div>
+
+<div class="coll-layout">
+  <aside class="coll-filters">
+    <h3>Filters</h3>
+    {%- for filter in collection.filters -%}
+      <div class="filter-group">
+        <h4>{{ filter.label }}</h4>
+        {%- for value in filter.values limit: 6 -%}
+        <a href="{{ value.url_to_add_value }}" class="filter-opt" style="text-decoration:none;">
+          <div class="filter-check{% if value.active %} active{% endif %}"></div>{{ value.label }}
+        </a>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </aside>
+
+  <div class="coll-grid">
+    {%- paginate collection.products by 24 -%}
+    {%- for product in collection.products -%}
+      <div class="product-card" onclick="window.location.href='{{ product.url }}'">
+        <div class="product-img">
+          <div class="ph"><img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}"></div>
+          {%- if product.images.size > 1 -%}<div class="ph-alt"><img src="{{ product.images[1] | image_url: width: 500 }}" alt="{{ product.title | escape }}"></div>{%- endif -%}
+          <span class="product-wishlist" data-product-handle="{{ product.handle }}">&#9825;</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">{{ product.title }}</div>
+          <div class="product-price">({{ product.price | money }})</div>
+        </div>
+      </div>
+    {%- else -%}
+      <p>No products in this collection yet.</p>
+    {%- endfor -%}
+
+    {%- if paginate.pages > 1 -%}
+    <div class="coll-pagination" style="grid-column:1/-1;display:flex;justify-content:center;gap:12px;margin-top:24px;">
+      {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr; Prev</a>{%- endif -%}
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>{%- else -%}<strong>{{ part.title }}</strong>{%- endif -%}
+      {%- endfor -%}
+      {%- if paginate.next -%}<a href="{{ paginate.next.url }}">Next &rarr;</a>{%- endif -%}
+    </div>
+    {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Collection", "settings": [] }
+{% endschema %}

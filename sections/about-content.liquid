@@ -1,0 +1,67 @@
+<div class="about-hero"><h1>{{ section.settings.hero_heading }}</h1><p>{{ section.settings.hero_text }}</p></div>
+
+<div class="about-grid">
+  <div class="about-img">{%- if section.settings.image != blank -%}<img src="{{ section.settings.image | image_url: width: 800 }}" alt="{{ section.settings.hero_heading | escape }}">{%- endif -%}</div>
+  <div class="about-text">
+    <h2>{{ section.settings.body_heading }}</h2>
+    {{ section.settings.body_text }}
+    <div class="about-stats">
+      <div class="stat"><h4>{{ section.settings.stat_1_number }}</h4><p>{{ section.settings.stat_1_label }}</p></div>
+      <div class="stat"><h4>{{ section.settings.stat_2_number }}</h4><p>{{ section.settings.stat_2_label }}</p></div>
+      <div class="stat"><h4>{{ section.settings.stat_3_number }}</h4><p>{{ section.settings.stat_3_label }}</p></div>
+    </div>
+  </div>
+</div>
+
+<section class="section-sm" style="background:var(--gray-50);">
+  <div class="container"><div class="sec-header"><h2 class="sec-title">Our Values</h2></div></div>
+  <div class="values-grid">
+    {%- for block in section.blocks -%}
+    <div class="value-card" {{ block.shopify_attributes }}>
+      <div class="icon">{{ block.settings.icon }}</div>
+      <h3>{{ block.settings.title }}</h3>
+      <p>{{ block.settings.text }}</p>
+    </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About content",
+  "settings": [
+    { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Our Story" },
+    { "type": "textarea", "id": "hero_text", "label": "Hero text", "default": "Founded with a passion for preserving India's rich textile heritage, Indimode bridges the gap between centuries-old craftsmanship and modern fashion sensibilities." },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "body_heading", "label": "Body heading", "default": "Where Tradition Meets Tomorrow" },
+    { "type": "richtext", "id": "body_text", "label": "Body text" },
+    { "type": "text", "id": "stat_1_number", "label": "Stat 1 number", "default": "200+" },
+    { "type": "text", "id": "stat_1_label", "label": "Stat 1 label", "default": "Artisans" },
+    { "type": "text", "id": "stat_2_number", "label": "Stat 2 number", "default": "15+" },
+    { "type": "text", "id": "stat_2_label", "label": "Stat 2 label", "default": "Regions" },
+    { "type": "text", "id": "stat_3_number", "label": "Stat 3 number", "default": "50K+" },
+    { "type": "text", "id": "stat_3_label", "label": "Stat 3 label", "default": "Happy Customers" }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icon (emoji)", "default": "🧵" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About content",
+      "blocks": [
+        { "type": "value", "settings": { "icon": "🧵", "title": "Handcrafted", "text": "Every piece is made by hand, preserving traditional techniques passed down through generations." } },
+        { "type": "value", "settings": { "icon": "🌿", "title": "Sustainable", "text": "We use natural fabrics and eco-friendly dyes to minimize our environmental footprint." } },
+        { "type": "value", "settings": { "icon": "🤝", "title": "Fair Trade", "text": "Our artisans receive fair wages and work in safe, dignified conditions." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

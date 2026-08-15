@@ -1,0 +1,52 @@
+{%- comment -%}
+  Shopify has no native wishlist. This uses localStorage (product handles saved client-side)
+  so it works out of the box with zero apps, but it's per-device/per-browser only — it will
+  NOT sync between a customer's phone and laptop. For that, swap this for a wishlist app
+  (Swym, Wishlist Hero, etc.) and use its Liquid snippets instead.
+{%- endcomment -%}
+
+<div class="wishlist-header"><h1>My Wishlist</h1><p id="wishlistCount">Loading…</p></div>
+<div class="wishlist-section">
+  <div class="wishlist-grid" id="wishlistGrid"></div>
+</div>
+
+<script>
+  (function() {
+    function getWishlist() {
+      try { return JSON.parse(localStorage.getItem('indimode_wishlist') || '[]'); }
+      catch (e) { return []; }
+    }
+    var handles = getWishlist();
+    var countEl = document.getElementById('wishlistCount');
+    var grid = document.getElementById('wishlistGrid');
+    countEl.textContent = handles.length + ' item' + (handles.length === 1 ? '' : 's') + ' saved for later';
+    if (!handles.length) {
+      grid.innerHTML = '<p>Nothing saved yet — tap the heart on any product to add it here.</p>';
+      return;
+    }
+    handles.forEach(function(handle) {
+      fetch('/products/' + handle + '.js')
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(product) {
+          if (!product) return;
+          var card = document.createElement('div');
+          card.className = 'product-card';
+          card.onclick = function() { window.location.href = '/products/' + product.handle; };
+          card.innerHTML =
+            '<div class="product-img"><div class="ph"><img src="' + product.featured_image + '" alt="' + product.title + '"></div>' +
+            '<span class="product-wishlist liked" onclick="event.stopPropagation();indimodeToggleWishlist(\'' + product.handle + '\',this)">&#9829;</span></div>' +
+            '<div class="product-info"><div class="product-name">' + product.title + '</div>' +
+            '<div class="product-price">(Rs. ' + (product.price / 100).toLocaleString('en-IN') + ')</div></div>' +
+            '<button class="product-add" onclick="event.stopPropagation()">Add to Cart</button>';
+          grid.appendChild(card);
+        });
+    });
+  })();
+
+  function indimodeToggleWishlist(handle, el) {
+    var list = JSON.parse(localStorage.getItem('indimode_wishlist') || '[]');
+    list = list.filter(function(h) { return h !== handle; });
+    localStorage.setItem('indimode_wishlist', JSON.stringify(list));
+    if (el) el.closest('.product-card').remove();
+  }
+</script>

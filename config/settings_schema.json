@@ -1,0 +1,17 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Indimode Custom",
+    "theme_version": "0.1.0",
+    "theme_author": "Indimode"
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "url", "id": "social_instagram_link", "label": "Instagram" },
+      { "type": "url", "id": "social_facebook_link", "label": "Facebook" },
+      { "type": "url", "id": "social_pinterest_link", "label": "Pinterest" },
+      { "type": "url", "id": "social_youtube_link", "label": "YouTube" }
+    ]
+  }
+]

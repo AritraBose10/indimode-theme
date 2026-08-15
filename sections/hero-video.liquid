@@ -1,0 +1,36 @@
+<section class="hero">
+  <div class="hero-slide">
+    <div class="hero-bg">
+      <video id="heroVideo" autoplay muted loop playsinline preload="auto"
+        poster="{{ 'hero-video-poster.jpg' | asset_url }}"
+        data-mobile-poster="{{ 'hero-video-poster-mobile.jpg' | asset_url }}">
+        <source src="{{ section.settings.video_desktop | file_url }}" type="video/mp4">
+      </video>
+      <script>
+        (function() {
+          var v = document.getElementById('heroVideo');
+          if (!v) return;
+          var isMobile = window.matchMedia('(max-width:768px)').matches;
+          var poster = isMobile
+            ? '{{ 'hero-video-poster-mobile.jpg' | asset_url }}'
+            : '{{ 'hero-video-poster.jpg' | asset_url }}';
+          v.poster = poster;
+          v.play && v.play().catch(function(){});
+        })();
+      </script>
+    </div>
+    <div class="hero-overlay" style="background:transparent;"></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Video",
+  "settings": [
+    { "type": "video", "id": "video_desktop", "label": "Hero Video (Desktop)" }
+  ],
+  "presets": [
+    { "name": "Hero Video" }
+  ]
+}
+{% endschema %}

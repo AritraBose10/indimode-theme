@@ -1,4 +1,7 @@
-{%- assign is_home = request.page_type == 'index' -%}
+{%- assign is_home = false -%}
+{%- if template.name == 'index' -%}
+  {%- assign is_home = true -%}
+{%- endif -%}
 <!-- ANNOUNCEMENT BAR -->
 <div class="topbar">
   <button class="topbar-arrow" id="topbarPrev" aria-label="Previous announcement">‹</button>

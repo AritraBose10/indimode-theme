@@ -7,7 +7,17 @@
       font-display: swap;
     }
 
-    :root {
+    /* Image fallback styling for missing asset images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+.ph img, .product-img img, .pdp2-main-col img, .bento-item img {
+  background: var(--cream-light);
+  min-height: 200px;
+}
+
+:root {
       --red: #b43217;
       --red-dark: #962710;
       --red-light: #d44a2e;

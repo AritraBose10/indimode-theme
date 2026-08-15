@@ -173,6 +173,8 @@
     </div>
   </div>
 
+  {%- assign is_home = request.page_type == 'index' -%}
+
   <!-- ANNOUNCEMENT BAR -->
   <div class="topbar">
     <button class="topbar-arrow" id="topbarPrev" aria-label="Previous announcement">‹</button>
@@ -186,8 +188,6 @@
     </div>
     <button class="topbar-arrow" id="topbarNext" aria-label="Next announcement">›</button>
   </div>
-
-  {%- assign is_home = request.page_type == 'index' -%}
 
   <nav class="nav{% if is_home %} nav-home{% endif %}" id="mainNav">
     <div class="nav-inner">

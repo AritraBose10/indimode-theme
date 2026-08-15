@@ -11,10 +11,9 @@
           var v = document.getElementById('heroVideo');
           if (!v) return;
           var isMobile = window.matchMedia('(max-width:768px)').matches;
-          var poster = isMobile
-            ? '{{ 'hero-video-poster-mobile.jpg' | asset_url }}'
-            : '{{ 'hero-video-poster.jpg' | asset_url }}';
-          v.poster = poster;
+          var posterMobile = "{{ 'hero-video-poster-mobile.jpg' | asset_url }}";
+          var posterDesktop = "{{ 'hero-video-poster.jpg' | asset_url }}";
+          v.poster = isMobile ? posterMobile : posterDesktop;
           v.play && v.play().catch(function(){});
         })();
       </script>

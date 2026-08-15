@@ -173,13 +173,13 @@
     </div>
   </div>
 
-  {% render 'header' %}
+  {% section 'header' %}
 
   <main id="MainContent" role="main" tabindex="-1">
     {{ content_for_layout }}
   </main>
 
-  {% render 'footer' %}
+  {% section 'footer' %}
 
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
 </body>

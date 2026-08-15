@@ -1,0 +1,96 @@
+<!-- ANNOUNCEMENT BAR -->
+<div class="topbar">
+  <button class="topbar-arrow" id="topbarPrev" aria-label="Previous announcement">‹</button>
+  <div class="topbar-viewport">
+    <div class="topbar-track" id="topbarTrack">
+      <div class="topbar-item">FREE SHIPPING on orders above <span>₹1,999</span> | Pan-India Delivery</div>
+      <div class="topbar-item">EASY RETURNS & EXCHANGE within <span>7 Days</span></div>
+      <div class="topbar-item">100% HANDCRAFTED | Made with love in India</div>
+      <div class="topbar-item">NEW ARRIVALS every week — <span>Shop Fresh Picks →</span></div>
+    </div>
+  </div>
+  <button class="topbar-arrow" id="topbarNext" aria-label="Next announcement">›</button>
+</div>
+
+{%- assign is_home = request.page_type == 'index' -%}
+
+<nav class="nav{% if is_home %} nav-home{% endif %}" id="mainNav">
+  <div class="nav-inner">
+    <button class="hamburger" onclick="toggleMobileMenu(this)"><span></span><span></span><span></span></button>
+
+    {%- if is_home -%}
+      <div class="logo logo-home-desktop">
+        <a href="{{ routes.root_url }}"><img src="{{ 'indimode-logo.png' | asset_url }}" alt="{{ shop.name }}" class="logo-img"></a>
+      </div>
+      <div class="nav-menu nav-pills">
+        <a href="{{ routes.all_products_collection_url }}">New In</a>
+        <a href="{{ routes.all_products_collection_url }}">Shop All</a>
+        <a href="/collections/kurtis">Kurtis</a>
+        <a href="/collections/co-ords">Co-ords</a>
+        <a href="/collections/tops">Tops</a>
+        <a href="/collections/palazzos">Bottoms</a>
+      </div>
+    {%- else -%}
+      <div class="logo">
+        <a href="{{ routes.root_url }}"><img src="{{ 'indimode-logo.png' | asset_url }}" alt="{{ shop.name }}" class="logo-img"></a>
+      </div>
+      <div class="nav-menu">
+        <a href="{{ routes.root_url }}" {% if request.page_type == 'index' %}class="active"{% endif %}>Home</a>
+        <a href="{{ routes.all_products_collection_url }}" {% if request.page_type == 'collection' %}class="active"{% endif %}>Shop</a>
+        <a href="/pages/about">About</a>
+      </div>
+    {%- endif -%}
+
+    <div class="nav-actions">
+      {%- if is_home -%}
+        <a href="/pages/wishlist" class="nav-icon nav-icon-extra" aria-label="Wishlist">
+          <svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z"/></svg>
+        </a>
+        <button class="nav-icon nav-icon-extra" onclick="openSearch()" aria-label="Search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <a href="{{ routes.account_url }}" class="nav-icon nav-icon-extra" aria-label="Account">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </a>
+        <button class="nav-plus" onclick="toggleMobileMenu(this)" aria-label="More menu">+</button>
+      {%- else -%}
+        <button class="nav-icon nav-icon-extra" onclick="openSearch()" aria-label="Search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+      {%- endif -%}
+      <a href="{{ routes.cart_url }}" class="nav-icon" aria-label="Cart ({{ cart.item_count }} items)">
+        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4ZM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count">{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Search bar below nav -->
+<div class="search-bar-below" onclick="openSearch()">
+  <div class="search-bar-inner">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <span class="nav-search-text"><span class="nav-tw-text"></span><span class="cursor"></span></span>
+  </div>
+</div>
+
+<!-- Mobile overlay + menu -->
+<div class="mobile-overlay" onclick="closeMobileMenu()"></div>
+<div class="mobile-menu">
+  <a href="{{ routes.root_url }}">Home</a>
+  <a href="{{ routes.all_products_collection_url }}">New In</a>
+  <a href="{{ routes.all_products_collection_url }}">Shop All</a>
+  <a href="/collections/kurtis">Kurtis</a>
+  <a href="/collections/co-ords">Co-ords</a>
+  <a href="/collections/tops">Tops</a>
+  <a href="/collections/palazzos">Bottoms</a>
+  <a href="/pages/about">About</a>
+  <a href="/pages/contact">Contact</a>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": []
+}
+{% endschema %}

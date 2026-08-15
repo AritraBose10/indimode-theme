@@ -1,3 +1,7 @@
+/* Image fallback styling for missing asset images */
+img { max-width: 100%; height: auto; }
+.ph img, .product-img img, .pdp2-main-col img, .bento-item img { background: var(--cream-light); min-height: 200px; }
+
 
     @font-face {
       font-family: 'FoglihtenNo07';
@@ -7,17 +11,7 @@
       font-display: swap;
     }
 
-    /* Image fallback styling for missing asset images */
-img {
-  max-width: 100%;
-  height: auto;
-}
-.ph img, .product-img img, .pdp2-main-col img, .bento-item img {
-  background: var(--cream-light);
-  min-height: 200px;
-}
-
-:root {
+    :root {
       --red: #b43217;
       --red-dark: #962710;
       --red-light: #d44a2e;
@@ -3633,7 +3627,7 @@ img {
       right: 0;
       bottom: 0;
       height: min(420px, 55%);
-      background-image: url('../assets/footer-lotus.png');
+      background-image: url('images/footer-lotus.png');
       background-repeat: repeat-x;
       background-position: bottom center;
       background-size: auto 100%;
@@ -9514,28 +9508,3 @@ img {
       }
     }
   
-/* === FOOTER LOTUS BACKGROUND === */
-.footer {
-  position: relative;
-  overflow: hidden;
-}
-.footer-lotus-bg {
-  position: absolute;
-  top: -30px;
-  right: -30px;
-  width: 420px;
-  height: 420px;
-  opacity: 0.06;
-  pointer-events: none;
-  z-index: 0;
-}
-.footer-lotus-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.footer-grid,
-.footer-bottom {
-  position: relative;
-  z-index: 1;
-}

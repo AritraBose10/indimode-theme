@@ -2437,3 +2437,96 @@ async function handleContactSubmit(event, form) {
         el.classList.add('visible');
       });
     });
+
+/* ===== ANIMATIONS & INTERACTIVITY ENGINE ===== */
+function initThemeAnimations() {
+  // 1. Scroll Entrance Reveal Observer
+  var targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-rotate, .clip-reveal, .split-text, .stagger-children, .sec-header, .product-card, .fc-card, .stl-card, .bento-item, .bta-item');
+  
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 });
+
+    targets.forEach(function (el) {
+      observer.observe(el);
+    });
+  } else {
+    targets.forEach(function (el) {
+      el.classList.add('visible');
+    });
+  }
+
+  // 2. Typewriter Effect in Search Bar
+  initTypewriter();
+
+  // 3. Announcement Topbar Ticker
+  initTopbarTicker();
+}
+
+// Typewriter
+var twPhrases = ['Kurta Sets', 'Silk Co-ords', 'Handloom Tops', 'Festive Collections', 'Mulmul Palazzos'];
+var twPhraseIdx = 0, twCharIdx = 0, twIsDeleting = false;
+function initTypewriter() {
+  var textEl = document.querySelector('.nav-tw-text');
+  if (!textEl || textEl._hasTypewriter) return;
+  textEl._hasTypewriter = true;
+  function type() {
+    var current = twPhrases[twPhraseIdx];
+    if (twIsDeleting) {
+      twCharIdx--;
+      textEl.textContent = current.substring(0, twCharIdx);
+    } else {
+      twCharIdx++;
+      textEl.textContent = current.substring(0, twCharIdx);
+    }
+    var delay = twIsDeleting ? 60 : 120;
+    if (!twIsDeleting && twCharIdx === current.length) {
+      delay = 2000;
+      twIsDeleting = true;
+    } else if (twIsDeleting && twCharIdx === 0) {
+      twIsDeleting = false;
+      twPhraseIdx = (twPhraseIdx + 1) % twPhrases.length;
+      delay = 400;
+    }
+    setTimeout(type, delay);
+  }
+  type();
+}
+
+// Topbar Ticker
+function initTopbarTicker() {
+  var track = document.getElementById('topbarTrack');
+  if (!track || track._hasTicker) return;
+  track._hasTicker = true;
+  var prevBtn = document.getElementById('topbarPrev');
+  var nextBtn = document.getElementById('topbarNext');
+  var idx = 0;
+  var items = track.children;
+  if (!items.length) return;
+  function update() {
+    track.style.transform = 'translateY(-' + (idx * 100) + '%)';
+  }
+  if (prevBtn) prevBtn.onclick = function() { idx = (idx - 1 + items.length) % items.length; update(); };
+  if (nextBtn) nextBtn.onclick = function() { idx = (idx + 1) % items.length; update(); };
+  setInterval(function() {
+    idx = (idx + 1) % items.length;
+    update();
+  }, 3500);
+}
+
+// Initialization hooks for standard browser DOM + Shopify Theme Editor events
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initThemeAnimations);
+} else {
+  initThemeAnimations();
+}
+
+['shopify:section:load', 'shopify:section:select', 'shopify:section:deselect', 'shopify:section:reorder'].forEach(function (evt) {
+  document.addEventListener(evt, initThemeAnimations);
+});
